@@ -1,5 +1,6 @@
 #include "read_file.h"
 #include <iostream>
+#include <cstring>
 
 const char* getDefaultDelimitersAndStopChars()
 {

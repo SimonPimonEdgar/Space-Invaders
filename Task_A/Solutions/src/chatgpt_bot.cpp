@@ -11,7 +11,21 @@ void giveWelcomeMessage()
 }
 
 std::string askChatBotForAnswer( const std::string& userInput ) {
-  auto completion = openai::completion().create(R"({
+  openai::Json querry; /** = R"({
+        "model": "text-davinci-003",
+        "prompt": "userInput",
+        "max_tokens": 7,
+        "temperature": 0
+  })";*/
+  
+  querry["model"] = "text-davinci-003";
+  querry["prompt"] = userInput;
+  querry["max_tokens"] = 100;
+  querry["temperature"] = 0;
+
+  //std::cout << querry << std::endl;
+  auto completion = openai::completion().create(querry);
+  /*auto completion = openai::completion().create(R"({
         "model": "text-davinci-003",
         "prompt": "Say this is a test",
         "max_tokens": 7,

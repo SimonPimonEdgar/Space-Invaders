@@ -1,6 +1,10 @@
 #include <iostream>
 #include <ctime>
 
+struct Point { 
+    float x, y;
+}; 
+
 int main() {
     int NUM = 10000000;
     std::clock_t start = std::clock();

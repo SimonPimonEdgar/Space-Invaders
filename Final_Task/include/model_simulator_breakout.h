@@ -12,6 +12,8 @@ public:
 
     void simulate_game_step(); // simulates one step of the Pong game
 
+    int addOne(int input_value); // Example function - used for simple unit tests
+
 private:
     int width = 40; // game width
     int height = 24; // game height

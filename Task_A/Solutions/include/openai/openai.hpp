@@ -341,7 +341,7 @@ public:
                     token_ = std::string{env_p};
                 }
             }
-            session_.setUrl("https://api.openai.com/v1/");
+            session_.setUrl("https://api.openai.com/v1/chat/");
             session_.setToken(token_, organization_);
         }
     
@@ -435,7 +435,7 @@ public:
     }
 
 private:
-    std::string base_url{ "https://api.openai.com/v1/" };
+    std::string base_url{ "https://api.openai.com/v1/chat/" };
 
     void setParameters(const std::string& suffix, const std::string& data, const std::string& contentType = "") {
         auto complete_url =  base_url+ suffix;

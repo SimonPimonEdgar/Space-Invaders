@@ -11,20 +11,22 @@ void giveWelcomeMessage()
 }
 
 std::string askChatBotForAnswer( const std::string& userInput ) {
-  openai::Json querry; /** = R"({
+  openai::Json query; /** = R"({
         "model": "text-davinci-003",
         "prompt": "userInput",
         "max_tokens": 7,
         "temperature": 0
   })";*/
   
-  querry["model"] = "text-davinci-003";
-  querry["prompt"] = userInput;
-  querry["max_tokens"] = 100;
-  querry["temperature"] = 0;
+  query["model"] = "gpt-3.5-turbo";  // Model name
+  query["messages"] = openai::Json::array({
+      {{"role", "user"}, {"content", userInput}}  // Message array with user input
+  });
+  query["max_tokens"] = 100;  // Maximum number of tokens to generate
+  query["temperature"] = 0; 
 
   //std::cout << querry << std::endl;
-  auto completion = openai::completion().create(querry);
+  auto completion = openai::completion().create(query);
   /*auto completion = openai::completion().create(R"({
         "model": "text-davinci-003",
         "prompt": "Say this is a test",
@@ -33,7 +35,7 @@ std::string askChatBotForAnswer( const std::string& userInput ) {
   })"_json); // Using user-defined (raw) string literals*/
   std::cout << "Response is:\n" << completion.dump(2) << '\n';
 
-  return completion["choices"][0]["text"];
+  return completion["choices"][0]["message"]["content"];
 }
 
 

@@ -3,6 +3,7 @@
 
 #include "observer.h"
 #include <string>
+#include <cstring>
 #include <map>
 #include <random>
 #include <vector>

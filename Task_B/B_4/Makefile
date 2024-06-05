@@ -23,6 +23,17 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p $(BUILDDIR)
 	$(CXX) $(INCLUDES) $(CXXFLAGS) -c $< -o $@
 
+# On a Mac: "brew install sfml" will install the library.
+getSFML:
+	@echo "Downloading SFML"
+	curl https://www.sfml-dev.org/files/SFML-2.6.0-linux-gcc-64-bit.tar.gz --output SFML.tar.gz
+	@echo "Unpacking the lib"
+	tar -xf SFML.tar.gz
+	@echo "Removing download"
+	rm SFML.tar.gz
+	@echo "Renaming folder"
+	mv SFML-2.6.0 SFML
+	@echo "Finished!"
 
 clean:
 	rm -rf $(BUILDDIR) chatbot

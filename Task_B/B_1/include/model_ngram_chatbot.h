@@ -2,6 +2,7 @@
 #define MODEL_NGRAM_CHATBOT_H_
 
 #include <string>
+#include <cstring>
 #include <map>
 #include <random>
 #include <vector>

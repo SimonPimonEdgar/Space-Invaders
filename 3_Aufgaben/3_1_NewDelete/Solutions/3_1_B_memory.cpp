@@ -6,7 +6,7 @@ struct Point {
 }; 
 
 int main() {
-    int NUM = 10000000;
+    int NUM = 100000000;
     std::clock_t start = std::clock();
     for (int i = 0;i<NUM;++i){
         Point p;

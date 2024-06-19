@@ -16,10 +16,6 @@ Für eine vorgegebene Funktionalität wurden automatisch (durch ChatGPT als Werk
 
 Diese sollen getestet werden.
 
-
-<div class="alert alert-warning">
-<b>ToDo</b>: 
-
 * Versuchen sie zuerst zu verstehen, was diese Funktionen genau tun und wie sie es genau umsetzen durch Inspektion des Codes.
 * Schreiben sie in Boost Unit tests, die diese beiden Funktionen überprüfen und testen, ob sie die gegebene Aufgabenstellung erfüllen.
 * Aufruf make: `make closestsum_dp` bzw. `make closestsum_simple`.

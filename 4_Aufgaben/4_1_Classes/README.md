@@ -62,9 +62,6 @@ int main() {
 * Implementieren Sie die Klasse `Customer` nun abgeleitet von `Person`. Die Klasse erbt so und soll dazu einen `Account` und eine ID (z. B. `unsigned int`) besitzen.
 * Fügen Sie in beiden Klassen eine Funktion `print` hinzu, die den Zustand des Objekts (Werte aller Attribute) ausgibt.
 
-## Aufgabenteil C) Multiple Inheritance
-
-C++ bietet die Möglichkeit zum erben von mehreren Oberklassen. Dies kann zu Problemen führen, zum Beispiel, wenn diese Methoden mit gleicher Signatur enthalten. Allgemein ist in solchen Fällen immer einmal zu prüfen, ob dies nicht besser durch Definition von Interfaces oder abstrakte Oberklassen gelöst werden kann. 
 
 ## Link zu weiteren Materialien
 

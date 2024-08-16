@@ -24,6 +24,48 @@ void Player::setY(int a) {
     y = a;
 };
 
+Alien::Alien(AlienVar var, int x, int y)
+{
+    this->var = var;
+    this->x = x;
+    this->y = y;
+};
+
+int Alien::getX()
+{
+    return x;
+};
+
+int Alien::getY()
+{
+    return y;  
+};
+
+AlienVar Alien::getVar()
+{
+    return var;
+};
+
+bool Alien::getDead()
+{
+    return dead;
+};
+
+void Alien::setX(int a)
+{
+    x = a;
+};
+
+void Aien::setY(int a)
+{
+    y = a;
+};
+
+void Alien::setDead(bool a)
+{
+    dead = a;
+};
+
 GameModel::GameModel()
     : player(height, width/2 ) {
 };

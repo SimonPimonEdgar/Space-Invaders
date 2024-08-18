@@ -83,7 +83,8 @@ private:
     int height = 24; // game height
     int dir = 1; // ball direction
     Player player; // player object
-    void moveAlien(Alien& alien);
+    Alien[] aliens; // alien objects
+    void moveAliens(Alien[]& aliens); //supoort method for simulate
 
 };
 

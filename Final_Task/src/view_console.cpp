@@ -41,6 +41,7 @@ void ConsoleView::update() {
     // Draw different objects. 
     drawPlayer(model->getPlayer().getY(), model->getPlayer().getX());
     drawAliens();
+    drawCover();
 };
 
 void ConsoleView::setup_view() {
@@ -62,5 +63,16 @@ void ConsoleView::drawAliens()
     for(int i = 0; i < 40; i++)
     {
         mvaddch(model->getAliens(i).getY()-1, model->getAliens(i).getX(), alienTexture1);
+    }
+};
+
+void ConsoleView::drawCover()
+{
+    for(int i = 0; i < 3; i++)
+    {
+       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX(), 'X');
+       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 1, 'X');
+       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 2, 'X');
+       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 3, 'X');
     }
 };

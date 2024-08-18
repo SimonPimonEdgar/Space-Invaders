@@ -13,6 +13,9 @@ GameModel::GameModel(int wave)
                 for(int i = 0; i < 40; i ++){
                     aliens[i] = Alien(1, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot);
                 }
+                covers[0] = Cover((2 * width/5) -8, height - 6);
+                covers[1] = Cover((3* width/5) - 6, height - 6);
+                covers[2] = Cover((4* width/5) - 4, height - 6);
                 break;
             }
             default:
@@ -47,6 +50,11 @@ Player& GameModel::getPlayer() {
 Alien& GameModel::getAliens(int index)
 {
     return aliens[index];
+};
+
+Cover& GameModel::getCovers(int index)
+{
+    return covers[index];
 };
 
 void GameModel::control_player(wchar_t ch)
@@ -84,7 +92,7 @@ void GameModel::control_player(wchar_t ch)
 
 void GameModel::moveAliens()
 {
-    if(alienTimer == 1)
+    if(alienTimer == 15)
     {
         alienTimer = 0;
         if(!alienDir)
@@ -107,7 +115,7 @@ void GameModel::moveAliens()
         }
         else 
         {
-            if(!(aliens[0].getX() == 3))
+            if(!(aliens[0].getX() == 2))
             {
                 for(int i = 0; i < 40; i++)
                 { 

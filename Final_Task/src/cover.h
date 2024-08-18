@@ -6,8 +6,9 @@ public:
     int getLife();
     void setX(int a);
     void setY(int a);
-    void setLife();
+    void setLife(int a);
 private:
     int x,y; // x and y coordinate of the left tile from the cover
     int life = 5;
+    bool dead = false;
 };

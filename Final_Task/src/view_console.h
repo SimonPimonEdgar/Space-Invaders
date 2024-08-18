@@ -19,6 +19,8 @@ public:
 
     void drawAliens();
 
+    void drawCover();
+
 private:
     // Textures
     char wallTexture = 'X';  // Wall texture character

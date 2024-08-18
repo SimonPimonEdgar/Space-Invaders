@@ -14,6 +14,8 @@ private:
     int x, y, height; // player's coordinates and height
 };
 
+enum class AlienVar{one};
+
 class Alien {
 public:
     Alien(AlienVar var, int x, int y); // constructor that takes in the variant and the initial x and y coordinates of the alien
@@ -32,8 +34,6 @@ private:
     AlienVar var; // variant of the alien
 };
 
-enum class AlienVar{1, 2, 3};
-
 
 class Shot {
 public:
@@ -49,6 +49,8 @@ private:
     bool dir; // direction of the shot (Upwards = True, Downwards = False)
 };
 
+enum class PowerUpVar{one};
+
 class PowerUp{
 public:
     PowerUp(int x, int y, PowerUpVar var); // constructor that takes in the variant and the initial x and y coordinates of the power up
@@ -62,8 +64,6 @@ private:
     int x, y; // coordinates of the power up
     PowerUpVar var; // Variant of the power up
 };
-
-enum class PowerUpVar{1, 2, 3}; 
 
 class GameModel : public Observable { // Game class inherits from Observable class
 public:
@@ -83,8 +83,8 @@ private:
     int height = 24; // game height
     int dir = 1; // ball direction
     Player player; // player object
-    Alien[] aliens; // alien objects
-    void moveAliens(Alien[]& aliens); //supoort method for simulate
+    Alien aliens[]; // alien objects
+    void moveAliens(Alien aliens[]); //support method for simulate
 
 };
 

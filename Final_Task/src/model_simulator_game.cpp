@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 
-Player::Player(int y, int x)
+Player::Player(int x, int y)
 {
     setX(x);
     setY(y);
@@ -26,9 +26,9 @@ void Player::setY(int a) {
 
 Alien::Alien(AlienVar var, int x, int y)
 {
-    this->var = var;
-    this->x = x;
-    this->y = y;
+   
+    setX(x);
+    setY(y);
 };
 
 int Alien::getX()
@@ -56,7 +56,7 @@ void Alien::setX(int a)
     x = a;
 };
 
-void Aien::setY(int a)
+void Alien::setY(int a)
 {
     y = a;
 };

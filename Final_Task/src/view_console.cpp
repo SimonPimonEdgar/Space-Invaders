@@ -21,6 +21,7 @@ void ConsoleView::update() {
     // Example for building the game view
     for(int i = 0; i < model->getGameWidth(); i++) {
         mvaddch(0, i, wallTexture);
+        mvaddch(23, i, wallTexture);
     }
     for(int i = 0; i < model->getGameHeight(); i++) {
         mvaddch(i, 0, wallTexture);
@@ -45,5 +46,5 @@ void ConsoleView::setup_view() {
 };
 
 void ConsoleView::drawPlayer(int y, int x) {
-    mvaddch(y-1, x, 'P');
+    mvaddch(y-1, x, 'M');
 };

@@ -14,12 +14,10 @@ private:
     int x, y, height; // player's coordinates and height
 };
 
-enum class AlienVar{one};
-
 class Alien {
 public:
-    Alien(AlienVar var, int x, int y); // constructor that takes in the variant and the initial x and y coordinates of the alien
-    AlienVar getVar();
+    Alien(int var, int x, int y); // constructor that takes in the variant and the initial x and y coordinates of the alien
+    int getVar();
     int getX();
     int getY();
     int getH();
@@ -31,7 +29,7 @@ public:
 private:
     int x, y; // coordinates of the alien
     bool dead = false; // bool wether or not the alien got hit
-    AlienVar var; // variant of the alien
+    int var; // variant of the alien
 };
 
 

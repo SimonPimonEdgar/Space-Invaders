@@ -17,9 +17,14 @@ public:
 
     void drawPlayer(int y, int x);  // Function to draw the player
 
+    void drawAliens();
+
 private:
     // Textures
     char wallTexture = 'X';  // Wall texture character
+    char alienTexture1 = 'A';
+    char alienTexture2 = 'B';
+    char alienTexture3 = 'C';
 
     void setup_view();  // Function to set up the view
 };

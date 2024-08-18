@@ -16,12 +16,22 @@ int Player::getY() {
     return y;
 };
 
+int Player::getLifes()
+{
+    return lifes;
+};
+
 void Player::setX(int a) {
     x = a;
 };
 
 void Player::setY(int a) {
     y = a;
+};
+
+void Player::setLifes(int a)
+{
+    lifes =a;
 };
 
 Alien::Alien(int var, int x, int y)
@@ -66,9 +76,35 @@ void Alien::setDead(bool a)
     dead = a;
 };
 
-GameModel::GameModel()
-    : player(height, width/2 ) {
-};
+GameModel::GameModel(int wave)
+    :player(height,width/2)
+     {
+        switch(wave)
+        {
+            case 1:
+            {
+                for(int i = 0; i < 10; i ++){
+                    aliens1[i] = Alien(1, 10 + (2*i), 4);
+    	            aliens2[i] = Alien(1, 10 + (2*i), 5);
+                    aliens3[i] = Alien(1, 10 + (2*i), 6);
+                    aliens4[i] = Alien(1, 10 + (2*i), 7);
+                }
+                break;
+            }
+            default:
+            {
+                Alien alien = Alien(1, 1, 1);
+                alien.setDead(true);
+                for(int i = 0; i < 10; i ++){
+                    aliens1[i] = alien;
+    	            aliens2[i] = alien;
+                    aliens3[i] = alien;
+                    aliens4[i] = alien;
+                    break;
+                }
+            }
+        }
+    };
 
 // Example function - used for simple unit tests
 int GameModel::addOne(int input_value) {
@@ -85,6 +121,26 @@ int GameModel::getGameHeight() {
     
 Player& GameModel::getPlayer() {
     return player; 
+};
+
+Alien& GameModel::getAliens1(int index)
+{
+    return aliens1[index];
+};
+
+Alien& GameModel::getAliens2(int index)
+{
+    return aliens2[index];
+};
+
+Alien& GameModel::getAliens3(int index)
+{
+    return aliens3[index];
+};
+
+Alien& GameModel::getAliens4(int index)
+{
+    return aliens4[index];
 };
 
 void GameModel::control_player(wchar_t ch)

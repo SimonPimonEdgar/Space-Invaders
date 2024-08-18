@@ -28,6 +28,11 @@ void ConsoleView::update() {
         mvaddch(i, model->getGameWidth() - 1, wallTexture);
     }
 
+    // Show lifes of player
+    mvaddch(1, (int) ((2* model->getGameWidth() / 3 ) +1), 'L');
+    mvaddch(1, (int) ((2* model->getGameWidth() / 3 ) +2), ':');
+    mvprintw(1, (int) (2 * model->getGameWidth() / 3 +3),"%i", model->getPlayer().getLifes());
+
     // Show points of player
     mvaddch(1, (int) ((model->getGameWidth() / 2 / 2) - 2), 'P');
     mvaddch(1, (int) ((model->getGameWidth() / 2 / 2) - 1), ':');
@@ -35,6 +40,7 @@ void ConsoleView::update() {
 
     // Draw different objects. 
     drawPlayer(model->getPlayer().getY(), model->getPlayer().getX());
+    drawAliens();
 };
 
 void ConsoleView::setup_view() {
@@ -49,4 +55,15 @@ void ConsoleView::setup_view() {
 
 void ConsoleView::drawPlayer(int y, int x) {
     mvaddch(y-1, x, 'M');
+};
+
+void ConsoleView::drawAliens() 
+{
+    for(int i = 0; i < 10; i++)
+    {
+        mvaddch(model->getAliens1(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
+        mvaddch(model->getAliens2(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
+        mvaddch(model->getAliens3(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
+        mvaddch(model->getAliens4(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
+    }
 };

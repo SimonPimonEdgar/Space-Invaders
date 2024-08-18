@@ -8,7 +8,7 @@ BOOST_AUTO_TEST_SUITE(AddOneTest);
 
 BOOST_AUTO_TEST_CASE(TestCases)
 {
-    GameModel* game = new GameModel();
+    GameModel* game = new GameModel(1);
     BOOST_CHECK_EQUAL(game->addOne(20), 21); 
     
     

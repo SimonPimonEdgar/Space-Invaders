@@ -7,7 +7,7 @@
 #include "controller_console.h"
 
 int main() {
-    GameModel* simplegame = new GameModel();
+    GameModel* simplegame = new GameModel(1);
     ConsoleView* view = new ConsoleView(simplegame);
     ConsoleController* controller = new ConsoleController(simplegame);
     wchar_t ch = '\0';

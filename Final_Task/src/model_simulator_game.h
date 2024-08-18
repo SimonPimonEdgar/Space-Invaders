@@ -2,16 +2,20 @@
 #define MODEL_GAME_H_
 
 #include "observer.h" // include header file for the Observable class
+#include <cstddef>
 
 class Player {
 public:
     Player(int x, int y); // constructor that takes in initial x and y coordinates of player
     int getX();
     int getY();
+    int getLifes();
     void setX(int a);
     void setY(int a);
+    void setLifes(int a);
 private:
     int x, y, height; // player's coordinates and height
+    int lifes = 3; // player's lifes
 };
 
 class Alien {
@@ -65,11 +69,15 @@ private:
 
 class GameModel : public Observable { // Game class inherits from Observable class
 public:
-    GameModel(); // constructor
+    GameModel(int wave); // constructor
 
     int getGameWidth(); // returns the game's width
     int getGameHeight(); // returns the game's height
     Player& getPlayer(); // returns reference to player object
+    Alien& getAliens1(int index); //return reference to one aliens1 object
+    Alien& getAliens2(int index); //return reference to one aliens2 object
+    Alien& getAliens3(int index); //return reference to one aliens3 object
+    Alien& getAliens4(int index); //return reference to one aliens4 object
 
     void simulate_game_step(); // simulates one step of the game
     void control_player(wchar_t ch); // updates player movement direction based on keyboard input
@@ -81,7 +89,10 @@ private:
     int height = 24; // game height
     int dir = 1; // ball direction
     Player player; // player object
-    Alien aliens[]; // alien objects
+    Alien aliens1[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
+    Alien aliens2[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
+    Alien aliens3[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
+    Alien aliens4[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)};// alien objects
     void moveAliens(Alien aliens[]); //support method for simulate
 
 };

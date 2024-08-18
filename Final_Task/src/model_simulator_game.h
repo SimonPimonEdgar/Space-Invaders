@@ -74,11 +74,8 @@ public:
     int getGameWidth(); // returns the game's width
     int getGameHeight(); // returns the game's height
     Player& getPlayer(); // returns reference to player object
-    Alien& getAliens1(int index); //return reference to one aliens1 object
-    Alien& getAliens2(int index); //return reference to one aliens2 object
-    Alien& getAliens3(int index); //return reference to one aliens3 object
-    Alien& getAliens4(int index); //return reference to one aliens4 object
-
+    Alien& getAliens(int index); //return reference to one aliens object
+    
     void simulate_game_step(); // simulates one step of the game
     void control_player(wchar_t ch); // updates player movement direction based on keyboard input
 
@@ -88,13 +85,18 @@ private:
     int width = 40; // game width
     int height = 24; // game height
     int dir = 1; // ball direction
+    int alienTimer = 0;
+    bool alienDir = false; //direction of the aliens (false = right, true = left)
+    int playerShotTimer = 0;
     Player player; // player object
-    Alien aliens1[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
-    Alien aliens2[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
-    Alien aliens3[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
-    Alien aliens4[10] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)};// alien objects
-    void moveAliens(Alien aliens[]); //support method for simulate
-
+    Alien aliens[40] = {Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),
+        Alien(1,1,1),Alien(1,1,1), Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),
+        Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),
+        Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),
+        Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
+    void moveAliens(); //support method for simulate_game_step
+    void waveCreation();
+    bool hasWon();
 };
 
 #endif // end of header file

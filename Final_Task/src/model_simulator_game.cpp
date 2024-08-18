@@ -1,80 +1,7 @@
 #include "model_simulator_game.h"
+#include <algorithm>
 #include <ncurses.h>
 #include <stdlib.h>
-
-Player::Player(int x, int y)
-{
-    setX(x);
-    setY(y);
-};
-
-int Player::getX() { 
-    return x;
-};
-
-int Player::getY() { 
-    return y;
-};
-
-int Player::getLifes()
-{
-    return lifes;
-};
-
-void Player::setX(int a) {
-    x = a;
-};
-
-void Player::setY(int a) {
-    y = a;
-};
-
-void Player::setLifes(int a)
-{
-    lifes =a;
-};
-
-Alien::Alien(int var, int x, int y)
-{
-    this->var = var;
-    setX(x);
-    setY(y);
-};
-
-int Alien::getX()
-{
-    return x;
-};
-
-int Alien::getY()
-{
-    return y;  
-};
-
-int Alien::getVar()
-{
-    return var;
-};
-
-bool Alien::getDead()
-{
-    return dead;
-};
-
-void Alien::setX(int a)
-{
-    x = a;
-};
-
-void Alien::setY(int a)
-{
-    y = a;
-};
-
-void Alien::setDead(bool a)
-{
-    dead = a;
-};
 
 GameModel::GameModel(int wave)
     :player(height,width/2)
@@ -83,11 +10,8 @@ GameModel::GameModel(int wave)
         {
             case 1:
             {
-                for(int i = 0; i < 10; i ++){
-                    aliens1[i] = Alien(1, 10 + (2*i), 4);
-    	            aliens2[i] = Alien(1, 10 + (2*i), 5);
-                    aliens3[i] = Alien(1, 10 + (2*i), 6);
-                    aliens4[i] = Alien(1, 10 + (2*i), 7);
+                for(int i = 0; i < 40; i ++){
+                    aliens[i] = Alien(1, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot);
                 }
                 break;
             }
@@ -95,11 +19,8 @@ GameModel::GameModel(int wave)
             {
                 Alien alien = Alien(1, 1, 1);
                 alien.setDead(true);
-                for(int i = 0; i < 10; i ++){
-                    aliens1[i] = alien;
-    	            aliens2[i] = alien;
-                    aliens3[i] = alien;
-                    aliens4[i] = alien;
+                for(int i = 0; i < 40; i ++){
+                    aliens[i] = alien;
                     break;
                 }
             }
@@ -123,24 +44,9 @@ Player& GameModel::getPlayer() {
     return player; 
 };
 
-Alien& GameModel::getAliens1(int index)
+Alien& GameModel::getAliens(int index)
 {
-    return aliens1[index];
-};
-
-Alien& GameModel::getAliens2(int index)
-{
-    return aliens2[index];
-};
-
-Alien& GameModel::getAliens3(int index)
-{
-    return aliens3[index];
-};
-
-Alien& GameModel::getAliens4(int index)
-{
-    return aliens4[index];
+    return aliens[index];
 };
 
 void GameModel::control_player(wchar_t ch)
@@ -176,8 +82,56 @@ void GameModel::control_player(wchar_t ch)
     }
 };
 
+void GameModel::moveAliens()
+{
+    if(alienTimer == 1)
+    {
+        alienTimer = 0;
+        if(!alienDir)
+        {
+            if(!(aliens[9].getX() == width - 3))
+            {
+                for(int i = 0; i < 40; i++)
+                { 
+                    aliens[i].setX(aliens[i].getX() + 1);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < 40; i++)
+                { 
+                    aliens[i].setY(aliens[i].getY() + 1);
+                }  
+                alienDir = true;
+            }
+        }
+        else 
+        {
+            if(!(aliens[0].getX() == 3))
+            {
+                for(int i = 0; i < 40; i++)
+                { 
+                    aliens[i].setX(aliens[i].getX() - 1);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < 40; i++)
+                { 
+                    aliens[i].setY(aliens[i].getY() + 1);
+                }  
+                alienDir = false;
+            }
+        }
+    }
+};
+
 void GameModel::simulate_game_step()
 {
     // Implement game dynamics.
+    // waveCreation();
+    // hasWon();
+    moveAliens();
     notifyUpdate();
+    alienTimer ++;
 };

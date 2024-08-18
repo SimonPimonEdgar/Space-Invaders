@@ -59,11 +59,8 @@ void ConsoleView::drawPlayer(int y, int x) {
 
 void ConsoleView::drawAliens() 
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 40; i++)
     {
-        mvaddch(model->getAliens1(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
-        mvaddch(model->getAliens2(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
-        mvaddch(model->getAliens3(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
-        mvaddch(model->getAliens4(i).getY()-1, model->getAliens1(i).getX(), alienTexture1);
+        mvaddch(model->getAliens(i).getY()-1, model->getAliens(i).getX(), alienTexture1);
     }
 };

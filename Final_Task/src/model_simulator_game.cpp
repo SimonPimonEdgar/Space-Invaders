@@ -24,9 +24,9 @@ void Player::setY(int a) {
     y = a;
 };
 
-Alien::Alien(AlienVar var, int x, int y)
+Alien::Alien(int var, int x, int y)
 {
-   
+    this->var = var;
     setX(x);
     setY(y);
 };
@@ -41,7 +41,7 @@ int Alien::getY()
     return y;  
 };
 
-AlienVar Alien::getVar()
+int Alien::getVar()
 {
     return var;
 };
@@ -89,13 +89,34 @@ Player& GameModel::getPlayer() {
 
 void GameModel::control_player(wchar_t ch)
 {
-    if (ch==KEY_LEFT)
+    switch(ch)
     {
-        player.setX(player.getX() - 1);
-    }
-    if (ch==KEY_UP)
-    {
-        player.setY(player.getY() - 1);
+        case KEY_LEFT:
+            if(player.getX() > 1)
+            {
+               player.setX(player.getX() - 1); 
+            }
+           break;
+        case KEY_RIGHT:
+            if(player.getX() < getGameWidth()-2)
+            {    
+                player.setX(player.getX() + 1);
+            }
+            break;
+        case KEY_UP:
+            if(player.getY() > 3)
+            {
+                	player.setY(player.getY()-1);
+            }
+            break;
+        case KEY_DOWN:
+            if(player.getY() < getGameHeight()-1)
+            {
+                player.setY(player.getY()+1);
+            }
+            break;
+        default:
+            break;
     }
 };
 

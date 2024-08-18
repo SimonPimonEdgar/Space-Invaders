@@ -29,6 +29,8 @@ void ConsoleView::update() {
     }
 
     // Show points of player
+    mvaddch(1, (int) ((model->getGameWidth() / 2 / 2) - 2), 'P');
+    mvaddch(1, (int) ((model->getGameWidth() / 2 / 2) - 1), ':');
     mvprintw(1, model->getGameWidth() / 2 / 2, "%i", 0);
 
     // Draw different objects. 

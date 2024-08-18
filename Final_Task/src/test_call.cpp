@@ -17,13 +17,13 @@ BOOST_AUTO_TEST_CASE(TestCases)
     alien->setX(2);
     BOOST_CHECK_EQUAL(alien->getX(), 2);
     alien->setDead(false);
-    BOOST_CHECK_EQUAL(alien, false);
+    BOOST_CHECK_EQUAL(alien->getDead(), false);
 
 
     Player* player = new Player(2, 2);
     BOOST_CHECK_EQUAL(player->getX(), 2);
     player->setX(5);
-    BOOST_CHECK_EQUAL(player, 5);
+    BOOST_CHECK_EQUAL(player->getX(), 5);
     player->setY(10);
     BOOST_CHECK_EQUAL(player->getY(), 10);
 }

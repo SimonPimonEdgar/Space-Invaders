@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <vector>
+#include <random>
 
 GameModel::GameModel(int wave)
     :player(height,width/2)
@@ -12,21 +13,16 @@ GameModel::GameModel(int wave)
             case 1:
             {
                 for(int i = 0; i < 40; i ++){
-                    aliens[i] = Alien(1, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot);
+                    aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
                 }
-                covers[0] = Cover((2 * width/5) -8, height - 6);
-                covers[1] = Cover((3* width/5) - 6, height - 6);
-                covers[2] = Cover((4* width/5) - 4, height - 6);
+                covers.push_back(Cover((2 * width/5) -8, height - 6));
+                covers.push_back(Cover((3* width/5) - 6, height - 6));
+                covers.push_back(Cover((4* width/5) - 4, height - 6));
                 break;
             }
             default:
             {
-                Alien alien = Alien(1, 1, 1);
-                alien.setDead(true);
-                for(int i = 0; i < 40; i ++){
-                    aliens[i] = alien;
-                    break;
-                }
+                break;
             }
         }
     };
@@ -48,17 +44,17 @@ Player& GameModel::getPlayer() {
     return player; 
 };
 
-Alien& GameModel::getAliens(int index)
+std::vector<Alien>& GameModel::getAliens()
 {
-    return aliens[index];
+    return aliens;
 };
 
-Cover& GameModel::getCovers(int index)
+std::vector<Cover>& GameModel::getCovers()
 {
-    return covers[index];
+    return covers;
 };
 
-std::vector<Shot> GameModel::getShots()
+std::vector<Shot>& GameModel::getShots()
 {
     return shots;
 };
@@ -108,9 +104,9 @@ void GameModel::control_player(wchar_t ch)
 
 void GameModel::moveAliens()
 {
-    if(alienTimer == 15)
+    if(alienTimer == 15 || alienTimer == 30 || alienTimer == 45)
     {
-        alienTimer = 0;
+        if(alienTimer==45) alienTimer = 0;
         if(!alienDir)
         {
             if(!(aliens[9].getX() == width - 3))
@@ -151,30 +147,59 @@ void GameModel::moveAliens()
 };
 
 // Geschrieben mit Hilfe von Ki
-void GameModel::eraseShots()
+void GameModel::eraseShotsAndAliens()
 {
     std::remove_if(shots.begin(), shots.end(), [](Shot& shot)
     {
         return !shot.getActive();
     }),
     shots.end();
+    std::remove_if(aliens.begin(), aliens.end(), [](Alien& alien)
+    {
+        return alien.getDead();
+    }),
+    aliens.end();
 };
 
 void GameModel::moveShots()
 {
     for(Shot& s : shots)
     {
-        if(alienTimer%5 == 0)
-        {
-            if(s.getDir())s.setY(s.getY()- 1);
-            else s.setY(s.getY()+ 1);
-        }
+        if(s.getDir())s.setY(s.getY()- 1);
+        else s.setY(s.getY()+ 1);
     }
+};
+
+std::vector<Alien> GameModel::filterBottom()
+{
+    std::vector<Alien> aliensBottom(aliens);
+    std::remove_if(aliensBottom.begin(), aliensBottom.end(), [this](Alien& alien1)
+    {
+        for(Alien& alien2 : aliens)
+        {
+            if(alien2.getX() == alien1.getX() && alien2.getY() < alien1.getY()) return true;
+        };
+        return false;
+    }),
+    aliensBottom.end();
+    return aliensBottom;
 };
 
 void GameModel::aliensShoot()
 {
-    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    double p = 0.025;
+    std::vector<Alien> aliensBottom = filterBottom();
+    for(Alien& alien : aliensBottom)
+    {
+        double random_value = dis(gen);
+        if (random_value <= p) {
+            Shot newShot = Shot(alien.getX(), alien.getY() + 1, false);
+            shots.push_back(newShot);
+        }
+    }
 };
 
 void GameModel::simulate_game_step()
@@ -182,9 +207,10 @@ void GameModel::simulate_game_step()
     // Implement game dynamics.
     // waveCreation();
     // hasWon();
-    aliensShoot();
+    if(alienTimer == 45)aliensShoot();
+    if(alienTimer%5 == 0)moveShots();
     moveAliens();
-    moveShots();
+    eraseShotsAndAliens();
     notifyUpdate();
     alienTimer ++;
 };

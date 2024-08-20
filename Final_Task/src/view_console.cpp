@@ -1,6 +1,8 @@
 #include "view_console.h"
+#include "model_simulator_game.h"
 #include <ncurses.h>
 #include <stdlib.h>
+#include <vector>
 
 
 ConsoleView::ConsoleView(GameModel* model) {
@@ -61,20 +63,23 @@ void ConsoleView::drawPlayer(int y, int x) {
 
 void ConsoleView::drawAliens() 
 {
-    for(int i = 0; i < 40; i++)
+    for(Alien& alien : model->getAliens())
     {
-        mvaddch(model->getAliens(i).getY()-1, model->getAliens(i).getX(), alienTexture1);
+        mvaddch(alien.getY()-1, alien.getX(), alienTexture1);
     }
 };
 
 void ConsoleView::drawCover()
 {
-    for(int i = 0; i < 3; i++)
+    for(Cover& cover : model->getCovers())
     {
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX(), 'X');
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 1, 'X');
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 2, 'X');
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 3, 'X');
+        int x,y;
+        x = cover.getX();
+        y = cover.getY();
+       mvaddch(y, x, coverTexture);
+       mvaddch(y, x + 1, coverTexture);
+       mvaddch(y, x + 2, coverTexture);
+       mvaddch(y, x + 3, coverTexture);
     }
 };
 

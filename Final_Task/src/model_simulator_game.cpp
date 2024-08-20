@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <vector>
 
 GameModel::GameModel(int wave)
     :player(height,width/2)
@@ -57,8 +58,14 @@ Cover& GameModel::getCovers(int index)
     return covers[index];
 };
 
+std::vector<Shot> GameModel::getShots()
+{
+    return shots;
+};
+
 void GameModel::control_player(wchar_t ch)
 {
+    playerShotTimer --;
     switch(ch)
     {
         case KEY_LEFT:
@@ -88,6 +95,15 @@ void GameModel::control_player(wchar_t ch)
         default:
             break;
     }
+    if(ch == ' ') 
+    {
+        if(playerShotTimer <= 0)
+        {
+        Shot newShot = Shot(player.getX(), player.getY()-2, true);
+        shots.push_back(newShot);
+        playerShotTimer = 15;
+        }
+    }
 };
 
 void GameModel::moveAliens()
@@ -99,16 +115,16 @@ void GameModel::moveAliens()
         {
             if(!(aliens[9].getX() == width - 3))
             {
-                for(int i = 0; i < 40; i++)
+                for(Alien& a : aliens)
                 { 
-                    aliens[i].setX(aliens[i].getX() + 1);
+                    a.setX(a.getX() + 1);
                 }
             }
             else
             {
-                for(int i = 0; i < 40; i++)
+                for(Alien& a : aliens)
                 { 
-                    aliens[i].setY(aliens[i].getY() + 1);
+                    a.setY(a.getY() + 1);
                 }  
                 alienDir = true;
             }
@@ -117,16 +133,16 @@ void GameModel::moveAliens()
         {
             if(!(aliens[0].getX() == 2))
             {
-                for(int i = 0; i < 40; i++)
+                for(Alien& a : aliens)
                 { 
-                    aliens[i].setX(aliens[i].getX() - 1);
+                    a.setX(a.getX() - 1);
                 }
             }
             else
             {
-                for(int i = 0; i < 40; i++)
+                for(Alien& a : aliens)
                 { 
-                    aliens[i].setY(aliens[i].getY() + 1);
+                    a.setY(a.getY() + 1);
                 }  
                 alienDir = false;
             }
@@ -134,12 +150,41 @@ void GameModel::moveAliens()
     }
 };
 
+// Geschrieben mit Hilfe von Ki
+void GameModel::eraseShots()
+{
+    std::remove_if(shots.begin(), shots.end(), [](Shot& shot)
+    {
+        return !shot.getActive();
+    }),
+    shots.end();
+};
+
+void GameModel::moveShots()
+{
+    for(Shot& s : shots)
+    {
+        if(alienTimer%5 == 0)
+        {
+            if(s.getDir())s.setY(s.getY()- 1);
+            else s.setY(s.getY()+ 1);
+        }
+    }
+};
+
+void GameModel::aliensShoot()
+{
+    
+};
+
 void GameModel::simulate_game_step()
 {
     // Implement game dynamics.
     // waveCreation();
     // hasWon();
+    aliensShoot();
     moveAliens();
+    moveShots();
     notifyUpdate();
     alienTimer ++;
 };

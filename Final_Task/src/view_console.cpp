@@ -42,6 +42,7 @@ void ConsoleView::update() {
     drawPlayer(model->getPlayer().getY(), model->getPlayer().getX());
     drawAliens();
     drawCover();
+    drawShots();
 };
 
 void ConsoleView::setup_view() {
@@ -74,5 +75,13 @@ void ConsoleView::drawCover()
        mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 1, 'X');
        mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 2, 'X');
        mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 3, 'X');
+    }
+};
+
+void ConsoleView::drawShots()
+{
+    for(Shot& s: model->getShots())
+    {
+        mvaddch(s.getY(), s.getX(), 'I');
     }
 };

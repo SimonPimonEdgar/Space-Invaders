@@ -7,20 +7,8 @@
 #include "player.h"
 #include "alien.h"
 #include "powerUp.h"
-
-class Shot {
-public:
-    Shot(int x, int y, bool dir); // contructor that takes in the direction and the initial x and y coordinates of the shot
-    int getX();
-    int getY();
-    bool getDir();
-    void setX(int a);
-    void setY(int a);
-
-private:
-    int x, y; // coordinates of the shot
-    bool dir; // direction of the shot (Upwards = True, Downwards = False)
-};
+#include "shot.h"
+#include <vector>
 
 class GameModel : public Observable { // Game class inherits from Observable class
 public:
@@ -31,6 +19,7 @@ public:
     Player& getPlayer(); // returns reference to player object
     Alien& getAliens(int index); // returns reference to one aliens object
     Cover& getCovers(int index); // returns reference to one covers object
+    std::vector<Shot> getShots();
 
     void simulate_game_step(); // simulates one step of the game
     void control_player(wchar_t ch); // updates player movement direction based on keyboard input
@@ -51,9 +40,13 @@ private:
         Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1, 1 ,1), Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),
         Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1),Alien(1,1,1)}; // alien objects
     Cover covers[3] = {Cover(1, 1), Cover(1, 1), Cover(1, 1)};
-    void moveAliens(); //support method for simulate_game_step
-    void waveCreation();
-    bool hasWon();
+    std::vector<Shot> shots;
+    void moveAliens(); //support method for simulate_game_step to update the position of aliens
+    void waveCreation(); // support method for simulate_game_step to create a new level
+    bool gameDone(); // support method for simlulate_game_step to update wether the game is done
+    void eraseShots(); //support method for simulate_game_step to update the position of shots
+    void moveShots(); //support method for simulate_game_step to update the position of shots
+    void aliensShoot(); // support method for simulate_game_step to creat alien shots
 };
 
 #endif // end of header file

@@ -8,7 +8,11 @@
 #include "alien.h"
 #include "powerUp.h"
 #include "shot.h"
+#include <ncurses.h>
 #include <vector>
+
+enum class Status {ingame, titlescreen, settings};
+enum class Controll {up, down, right, left, shoot, none};
 
 class GameModel : public Observable { // Game class inherits from Observable class
 public:
@@ -20,7 +24,14 @@ public:
     std::vector<Alien>& getAliens(); // returns reference to alien objects
     std::vector<Cover>& getCovers(); // returns reference to cover objects
     std::vector<Shot>& getShots();   // returns reference to shot objects
-    bool getIngame(); // returns the games's status
+    Status getStatus(); // returns the games's status
+    int getWave(); // returns the current/last wave
+    Controll getCurrent(); //returns the current setting
+    wchar_t getUp(); //return momentary up key
+    wchar_t getDown(); //return momentary down key
+    wchar_t getLeft(); //return momentary left key
+    wchar_t getRight(); //return momentary right key
+    wchar_t getShoot(); //return momentary shoot key
 
     void simulate_game_step(); // simulates one step of the game
     void control_player(wchar_t ch); // updates player movement direction based on keyboard input
@@ -28,13 +39,20 @@ public:
     int addOne(int input_value); // Example function - used for simple unit tests
 
 private:
-    int width = 40; // game width
+    int width = 41; // game width
     int height = 24; // game height
     int alienTimer = 0;
     bool alienDir = false; //direction of the aliens (false = right, true = left)
     int playerShotTimer = 0;
-    bool inGame = false; // bool wether or not a level is aktive
-    int wave = 0;
+    Status status = Status::titlescreen; // momentary screen
+    int wave = 0; // current wave
+    Controll current = Controll::none; // current setting, which will be changed
+    wchar_t up = KEY_UP;
+    wchar_t down = KEY_DOWN;
+    wchar_t left = KEY_LEFT;
+    wchar_t right = KEY_RIGHT;
+    wchar_t shoot = ' ';
+    wchar_t invalide = '1';
     Player player; // player object
     std::vector<Alien> aliens; // alien objects
     std::vector<Cover> covers; // cover objects
@@ -50,6 +68,7 @@ private:
     bool reachedBorder(); // support method for moveAliens()
     void calcScore(Alien alien); // support method for collision to calculate the score
     void levelFinished(); // support method for simulate_game_step to look wether the level is done
+    void reset(); //support method for waveCreation() to reset the level
 };
 
 #endif // end of header file

@@ -1,15 +1,17 @@
 #include "model_simulator_game.h"
 #include <algorithm>
+#include <cstdio>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <thread>
 #include <vector>
 #include <random>
+#include <iostream>
+#include <locale>
 
 GameModel::GameModel()
     :player(width/2,height - 4)
-     {
-
-     };
+    {};
 
 // Example function - used for simple unit tests
 int GameModel::addOne(int input_value) {
@@ -43,68 +45,404 @@ std::vector<Shot>& GameModel::getShots()
     return shots;
 };
 
-bool GameModel::getIngame()
+Status GameModel::getStatus()
 {
-    return inGame;
+    return status;
+};
+
+int GameModel::getWave()
+{
+    return wave;
+};
+
+Controll GameModel::getCurrent()
+{
+    return current;
+};
+
+wchar_t GameModel::getUp()
+{
+    return up;
+};
+
+wchar_t GameModel::getDown()
+{
+    return down;
+};
+
+wchar_t GameModel::getLeft()
+{
+    return left;
+};
+
+wchar_t GameModel::getRight()
+{
+    return right;
+};
+
+wchar_t GameModel::getShoot()
+{
+    return shoot;
 };
 
 void GameModel::control_player(wchar_t ch)
 {
-    if(inGame)
+    if(invalide == '1') invalide = ch;
+    switch(status)
     {
-    playerShotTimer --;
-    switch(ch)
+    case Status::ingame:
     {
-        case KEY_LEFT:
-            if(player.getX() > 1)
-            {
-               player.setX(player.getX() - 1); 
-            }
-           break;
-        case KEY_RIGHT:
-            if(player.getX() < getGameWidth()-2)
-            {    
-                player.setX(player.getX() + 1);
-            }
-            break;
-        case KEY_UP:
-            if(player.getY() > 3)
-            {
-                	player.setY(player.getY()-1);
-            }
-            break;
-        case KEY_DOWN:
-            if(player.getY() < getGameHeight()-1)
-            {
-                player.setY(player.getY()+1);
-            }
-            break;
-        default:
-            break;
-    }
-    if(ch == ' ') 
-    {
-        //if(playerShotTimer <= 0)
+        playerShotTimer --;
+        if(ch == left)
         {
-        Shot newShot = Shot(player.getX(), player.getY()-1, true);
-        shots.push_back(newShot);
-        playerShotTimer = 15;
+            if(player.getX() > 1) player.setX(player.getX() - 1);
         }
+        else {
+            if (ch == right) 
+            {
+                if(player.getX() < getGameWidth()-2) player.setX(player.getX() + 1);
+            }
+            else {
+                if (ch == up) 
+                {
+                    if(player.getY() > 3) player.setY(player.getY()-1);
+                }
+                else {
+                    if (ch == down) 
+                    {
+                        if(player.getY() < getGameHeight()-1) player.setY(player.getY()+1);
+                    }
+                    else {
+                        if (ch == shoot) 
+                        {
+                            Shot newShot = Shot(player.getX(), player.getY()-1, true);
+                            shots.push_back(newShot);
+                            playerShotTimer = 15;
+                        }
+                    }
+                }
+            }
+        }
+        break;
     }
-    }
-    else {
-        switch(ch)
+    case Status::titlescreen:
         {
-        case '1':
-            waveCreation(wave + 1);
-            alienTimer = 0;
-           break;
-        case '2':
-            
-            break;
-        default:
+            switch(ch)
+            {
+            case L'1':
+            {
+                status = Status::ingame;
+                if(player.getLifes() > 0) wave ++;
+                else
+                {
+                    wave = 1;
+                    player.setScore(0);
+                }
+                waveCreation(wave);
+                break;
+            }
+            case L'2':
+            {
+                status = Status::settings;
+
+                break;
+            }
+            default:
+                break;
+            }
             break;
         }
+    case Status::settings:
+        {
+            switch (ch) {
+            case '1':
+            {
+                if(current == Controll::none)
+                {
+                    current = Controll::up;  
+                }
+                else if(ch != invalide)
+                {
+                    switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+                break;
+            }
+            case '2':
+            {
+                if(current == Controll::none)
+                {
+                    current = Controll::down;  
+                }
+                else if(ch != invalide)
+                {
+                    switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+                break;
+            }
+            case '3':
+            {
+                if(current == Controll::none)
+                {
+                    current = Controll::left;  
+                }
+                else if(ch != invalide)
+                {
+                    switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+                break;
+            }
+            case '4':
+            {
+                if(current == Controll::none)
+                {
+                    current = Controll::right;  
+                }
+                else if(ch != invalide)
+                {
+                    switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+                break;
+            }
+            case '5':
+            {
+                if(current == Controll::none)
+                {
+                    current = Controll::shoot;  
+                }
+                else if(ch != invalide)
+                {
+                    switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+                break;
+            }
+            case '6':
+                {
+                if(current == Controll::none)
+                {
+                    status = Status::titlescreen;
+                    break;  
+                }
+                else if(ch != invalide)
+                {
+                    switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+                break;
+            }
+            default:
+                {
+                if(ch != invalide)
+                {
+                switch (current)
+                    {
+                        case Controll::up:
+                            up = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::down:
+                            down = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::left:
+                            left = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        case Controll::right:
+                            right = ch;
+                            current = Controll::none;
+                            break;
+
+                        case Controll::shoot:
+                            shoot = ch;
+                            current = Controll::none;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+            }
+            break;
+        }
+    default:
+        break;  
+    }
     }
 };
 
@@ -259,7 +597,7 @@ void GameModel::collision()
         for(Shot& shot: shots)
         {
             if(shot.getX() == cover.getX() && shot.getY() == cover.getY() || shot.getX() == cover.getX()+1 && shot.getY() == cover.getY() 
-            || shot.getX() == cover.getX()+2 && shot.getY() == cover.getY() || shot.getX() == cover.getX()+3 && shot.getY() == cover.getY())
+            || shot.getX() == cover.getX()+2 && shot.getY() == cover.getY())
             {
                 if(!shot.getDir())   cover.setLifes(cover.getLifes() - 1);
                 shot.setActive(false);
@@ -273,29 +611,65 @@ void GameModel::collision()
     }
 };
 
-void GameModel::levelFinished()
+void GameModel::reset()
 {
-    inGame = false;
-
+    player.setLifes(3);
+    player.setX(width/2);
+    player.setY(height - 4);
+    shots.clear();
+    aliens.clear();
+    covers.clear();
+    alienTimer = 0;
+    playerShotTimer = 0;
 };
 
-void GameModel::waveCreation(int wave)
+void GameModel::waveCreation(int w)
 {
-    switch(wave)
+    switch(w)
         {
             case 1:
             {
+                reset();
                 for(int i = 0; i < 40; i ++){
                     aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
                 }
+                covers.push_back(Cover((width - 2)/2, height - 6));
+                covers.push_back(Cover((width - 1)/4, height - 6));
+                covers.push_back(Cover(3*(width - 1)/4, height - 6));
+                break;
+            }
+            case 2:
+            {
+                reset();
+                for(int i = 0; i < 20; i ++){
+                    aliens.push_back( Alien(2, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
+                }
+                for(int i = 0; i < 20; i ++){
+                    aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 6 + div(i, 10).quot));
+                }
                 covers.push_back(Cover((2 * width/5) -8, height - 6));
-                covers.push_back(Cover((3* width/5) - 6, height - 6));
                 covers.push_back(Cover((4* width/5) - 4, height - 6));
-                inGame = true;
+                break;
+            }
+            case 3:
+            {
+                reset();
+                for(int i = 0; i < 10; i ++){
+                    aliens.push_back( Alien(3, 10 + (int) 2 * (i%10), 4));
+                }
+                for(int i = 0; i < 20; i ++){
+                    aliens.push_back( Alien(2, 10 + (int) 2 * (i%10), 5 + div(i, 10).quot));
+                }
+                for(int i = 0; i < 10; i ++){
+                    aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 7));
+                }
+                covers.push_back(Cover((3* width/5) - 6, height - 6));
                 break;
             }
             default:
             {
+                wave = 1;
+                waveCreation(wave);
                 break;
             }
         }
@@ -304,15 +678,15 @@ void GameModel::waveCreation(int wave)
 void GameModel::simulate_game_step()
 {
     // Implement game dynamics.
-    if(inGame)
+    if(status == Status::ingame)
     {
     if(alienTimer == 45)aliensShoot();
     if(alienTimer%5 == 0)moveShots();
     moveAliens();
     collision();
     eraser();
+    if(player.getLifes() == 0 || aliens.empty()) status = Status::titlescreen;
     }
-    if(player.getLifes() == 0 || aliens.empty()) inGame = false;
     notifyUpdate();
     alienTimer ++;
 };

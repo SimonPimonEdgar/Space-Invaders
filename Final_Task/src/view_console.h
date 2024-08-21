@@ -26,7 +26,8 @@ public:
 private:
     // Textures
     char wallTexture = 'X';  // Wall texture character
-    char alienTexture1 = 'A';
+    char coverTexture = 'O';  // cover texture character
+    char alienTexture1 = 'A'; // Alienvariant 1 texture character
     char alienTexture2 = 'B';
     char alienTexture3 = 'C';
 

@@ -1,4 +1,5 @@
 #include "view_console.h"
+#include "model_simulator_game.h"
 #include <ncurses.h>
 #include <stdlib.h>
 
@@ -36,13 +37,19 @@ void ConsoleView::update() {
     // Show points of player
     mvaddch(1, (int) ((model->getGameWidth() / 2 / 2) - 2), 'P');
     mvaddch(1, (int) ((model->getGameWidth() / 2 / 2) - 1), ':');
-    mvprintw(1, model->getGameWidth() / 2 / 2, "%i", 0);
+    mvprintw(1, model->getGameWidth() / 2 / 2, "%i", model->getPlayer().getScore());
 
     // Draw different objects. 
     drawPlayer(model->getPlayer().getY(), model->getPlayer().getX());
     drawAliens();
     drawCover();
     drawShots();
+
+    if(!model->getIngame())
+    {
+        mvprintw(model->getGameHeight()/2, (model->getGameWidth()-27)/2 , "Press 1 to start the level");
+        mvprintw(model->getGameHeight()/2 + 2, (model->getGameWidth()-31)/2 , "Press 2 to change the settings");
+    }
 };
 
 void ConsoleView::setup_view() {
@@ -56,25 +63,28 @@ void ConsoleView::setup_view() {
 };
 
 void ConsoleView::drawPlayer(int y, int x) {
-    mvaddch(y-1, x, 'M');
+    mvaddch(y, x, 'M');
 };
 
 void ConsoleView::drawAliens() 
 {
-    for(int i = 0; i < 40; i++)
+    for(Alien& alien : model->getAliens())
     {
-        mvaddch(model->getAliens(i).getY()-1, model->getAliens(i).getX(), alienTexture1);
+        mvaddch(alien.getY(), alien.getX(), alienTexture1);
     }
 };
 
 void ConsoleView::drawCover()
 {
-    for(int i = 0; i < 3; i++)
+    for(Cover& cover : model->getCovers())
     {
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX(), 'X');
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 1, 'X');
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 2, 'X');
-       mvaddch(model->getCovers(i).getY(), model->getCovers(i).getX() + 3, 'X');
+        int x,y;
+        x = cover.getX();
+        y = cover.getY();
+       mvaddch(y, x, coverTexture);
+       mvaddch(y, x + 1, coverTexture);
+       mvaddch(y, x + 2, coverTexture);
+       mvaddch(y, x + 3, coverTexture);
     }
 };
 

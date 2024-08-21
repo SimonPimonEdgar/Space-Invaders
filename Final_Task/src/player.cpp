@@ -19,6 +19,11 @@ int Player::getLifes()
     return lifes;
 };
 
+int Player::getScore()
+{
+    return score;
+};
+
 void Player::setX(int a) {
     x = a;
 };
@@ -30,4 +35,9 @@ void Player::setY(int a) {
 void Player::setLifes(int a)
 {
     lifes =a;
+};
+
+void Player::setScore(int a)
+{
+    score = a;
 };

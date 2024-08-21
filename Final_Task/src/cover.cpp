@@ -6,7 +6,7 @@ Cover::Cover(int x, int y)
     this->y = y;
 }
 
-int Cover::getLife()
+int Cover::getLifes()
 {
     return life;
 }
@@ -21,7 +21,7 @@ int Cover::getY()
     return y;
 }
 
-void Cover::setLife(int a)
+void Cover::setLifes(int a)
 {
     life = a;
 }

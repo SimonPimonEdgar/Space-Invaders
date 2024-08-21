@@ -5,10 +5,10 @@ public:
     int getX();
     int getY();
     int getH();
-    bool getDead();
+    bool getHit();
     void setX(int a);
     void setY(int a);
-    void setDead(bool a);
+    void setHit(bool a);
 
 private:
     int x, y; // coordinates of the alien

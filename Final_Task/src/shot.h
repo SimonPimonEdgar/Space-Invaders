@@ -7,6 +7,7 @@ public:
     bool getActive();
     void setX(int a);
     void setY(int a);
+    void setActive(bool a);
 
 private:
     int x, y; // coordinates of the shot

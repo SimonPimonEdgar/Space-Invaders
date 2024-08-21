@@ -1,13 +1,13 @@
-enum class PowerUpVar{one};
+enum class PowerUpVar{health, shots};
 
 class PowerUp{
 public:
     PowerUp(int x, int y, PowerUpVar var); // constructor that takes in the variant and the initial x and y coordinates of the power up
     int getX();
     int getY();
-    int getVar();
-    void setX();
-    void setY();
+    PowerUpVar getVar();
+    void setX(int a);
+    void setY(int a);
 
 private:
     int x, y; // coordinates of the power up

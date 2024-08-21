@@ -11,7 +11,8 @@
 
 GameModel::GameModel()
     :player(width/2,height - 4)
-    {};
+    {
+    };
 
 // Example function - used for simple unit tests
 int GameModel::addOne(int input_value) {
@@ -84,6 +85,11 @@ wchar_t GameModel::getShoot()
 {
     return shoot;
 };
+
+std::vector<PowerUp>& GameModel::getPowerUp()
+{
+    return powerUps;
+}
 
 void GameModel::control_player(wchar_t ch)
 {
@@ -575,7 +581,7 @@ void GameModel::collision()
         alien.setHit(false);
         for(Shot& shot: shots)
         {
-            if(shot.getX() == alien.getX() && shot.getY() == alien.getY())
+            if(shot.getX() == alien.getX() && shot.getY() == alien.getY() && shot.getDir())
             {
                  alien.setHit(true);
                  shot.setActive(false);
@@ -675,6 +681,22 @@ void GameModel::waveCreation(int w)
         }
 };
 
+void GameModel::spawnPowerUp()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(0.0, 1.0);
+    double p = 0.003;
+    double random_value = dis(gen);
+    if (random_value <= p) {
+        std::uniform_int_distribution<int> disW(1, width-1);
+        std::uniform_int_distribution<int> disH(12, height - 6);
+        int random_valueW = disW(gen);
+        int random_valueH = disH(gen);
+        powerUps.push_back(PowerUp(random_valueW, random_valueH, PowerUpVar::health));
+    }
+};
+
 void GameModel::simulate_game_step()
 {
     // Implement game dynamics.
@@ -685,6 +707,7 @@ void GameModel::simulate_game_step()
     moveAliens();
     collision();
     eraser();
+    spawnPowerUp();
     if(player.getLifes() == 0 || aliens.empty()) status = Status::titlescreen;
     }
     notifyUpdate();

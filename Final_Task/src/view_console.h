@@ -15,14 +15,6 @@ public:
 
     void update();  // Function to update the screen
 
-    void drawPlayer(int y, int x);  // Function to draw the player
-
-    void drawAliens();
-
-    void drawCover();
-
-    void drawShots();
-
 private:
     // Textures
     char wallTexture = 'X';  // Wall texture character
@@ -32,4 +24,9 @@ private:
     char alienTexture3 = 'C';
 
     void setup_view();  // Function to set up the view
+    void drawPlayer(int y, int x);  // Function to draw the player
+    void drawAliens(); // Function to draw the aliens
+    void drawCover(); // Function to draw the cover
+    void drawShots(); // Function to draw the shots
+    void drawPowerUp(); // Function to draw the PowerUp
 };

@@ -10,6 +10,7 @@
 #include "shot.h"
 #include <ncurses.h>
 #include <vector>
+#include <random>
 
 enum class Status {ingame, titlescreen, settings};
 enum class Controll {up, down, right, left, shoot, none};
@@ -24,6 +25,7 @@ public:
     std::vector<Alien>& getAliens(); // returns reference to alien objects
     std::vector<Cover>& getCovers(); // returns reference to cover objects
     std::vector<Shot>& getShots();   // returns reference to shot objects
+    std::vector<PowerUp>& getPowerUp(); // returns reference to power up objects
     Status getStatus(); // returns the games's status
     int getWave(); // returns the current/last wave
     Controll getCurrent(); //returns the current setting
@@ -57,6 +59,7 @@ private:
     std::vector<Alien> aliens; // alien objects
     std::vector<Cover> covers; // cover objects
     std::vector<Shot> shots; //shot objects
+    std::vector<PowerUp> powerUps; // PowerUp objects
     void moveAliens(); //support method for simulate_game_step to update the position of aliens
     void waveCreation(int wave); // support method for simulate_game_step to create a new level
     bool gameDone(); // support method for simlulate_game_step to update wether the game is done
@@ -69,6 +72,7 @@ private:
     void calcScore(Alien alien); // support method for collision to calculate the score
     void levelFinished(); // support method for simulate_game_step to look wether the level is done
     void reset(); //support method for waveCreation() to reset the level
+    void spawnPowerUp(); //support method for simulate_game_step to spawn PowerUps
 };
 
 #endif // end of header file

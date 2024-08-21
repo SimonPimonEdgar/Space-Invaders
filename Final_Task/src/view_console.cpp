@@ -47,7 +47,8 @@ void ConsoleView::update() {
         drawAliens();
         drawCover();
         drawShots();
-    }
+        drawPowerUp();
+        }
 
     if(model->getStatus() == Status::titlescreen)
     {
@@ -154,5 +155,13 @@ void ConsoleView::drawShots()
     for(Shot& s: model->getShots())
     {
         mvaddch(s.getY(), s.getX(), 'I');
+    }
+};
+
+void ConsoleView::drawPowerUp()
+{
+    for(PowerUp& p: model->getPowerUp())
+    {
+        mvaddch(p.getY(), p.getX(), 'H');
     }
 };

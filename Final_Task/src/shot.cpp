@@ -36,3 +36,8 @@ void Shot::setY(int a)
 {
     y = a;
 };
+
+void Shot::setActive(bool a)
+{
+    active = a;
+};

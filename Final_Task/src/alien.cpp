@@ -22,7 +22,7 @@ int Alien::getVar()
     return var;
 };
 
-bool Alien::getDead()
+bool Alien::getHit()
 {
     return dead;
 };
@@ -37,7 +37,7 @@ void Alien::setY(int a)
     y = a;
 };
 
-void Alien::setDead(bool a)
+void Alien::setHit(bool a)
 {
     dead = a;
 };

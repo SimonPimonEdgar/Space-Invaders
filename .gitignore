@@ -5,3 +5,5 @@
 **/tasks.json
 **/exe.exe
 **/*.exe
+**/*.o
+**/game

@@ -74,6 +74,7 @@ private:
     void levelFinished(); // support method for simulate_game_step to look wether the level is done
     void reset(); //support method for waveCreation() to reset the level
     void spawnPowerUp(); //support method for simulate_game_step to spawn PowerUps
+    void changeControll(wchar_t ch); // Changes the controll variables
 };
 
 #endif // end of header file

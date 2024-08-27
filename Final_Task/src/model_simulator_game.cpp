@@ -91,6 +91,10 @@ std::vector<PowerUp>& GameModel::getPowerUp()
     return powerUps;
 }
 
+// Eine alternative Implementation für eine Steuerung wäre das Interpretieren mit einem Brain-Computer-Interface, dass
+// die Signale des Hirns in eingaben implementieren kann. Da die momentane Steuerung von wchar_t abhängig  ist müsste man die Signale
+// in eben diese konvertieren. Ist jedoch einmal die Möglichkeit für das Interpetieren der Signale geschaffen sollte dies jedoch keine
+// Herausforderung sein. 
 void GameModel::control_player(wchar_t ch)
 {
     if(invalide == '1') invalide = ch;
@@ -125,7 +129,7 @@ void GameModel::control_player(wchar_t ch)
                             {
                             Shot newShot = Shot(player.getX(), player.getY()-1, true);
                             shots.push_back(newShot);
-                            playerShotTimer = 15;
+                            playerShotTimer = 25;
                             }
                         }
                     }
@@ -170,39 +174,7 @@ void GameModel::control_player(wchar_t ch)
                 {
                     current = Controll::up;  
                 }
-                else if(ch != invalide)
-                {
-                    switch (current)
-                    {
-                        case Controll::up:
-                            up = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::down:
-                            down = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::left:
-                            left = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::right:
-                            right = ch;
-                            current = Controll::none;
-                            break;
-
-                        case Controll::shoot:
-                            shoot = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                }
+                else changeControll(ch);
                 break;
             }
             case '2':
@@ -211,39 +183,7 @@ void GameModel::control_player(wchar_t ch)
                 {
                     current = Controll::down;  
                 }
-                else if(ch != invalide)
-                {
-                    switch (current)
-                    {
-                        case Controll::up:
-                            up = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::down:
-                            down = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::left:
-                            left = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::right:
-                            right = ch;
-                            current = Controll::none;
-                            break;
-
-                        case Controll::shoot:
-                            shoot = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                }
+                else changeControll(ch);
                 break;
             }
             case '3':
@@ -252,39 +192,7 @@ void GameModel::control_player(wchar_t ch)
                 {
                     current = Controll::left;  
                 }
-                else if(ch != invalide)
-                {
-                    switch (current)
-                    {
-                        case Controll::up:
-                            up = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::down:
-                            down = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::left:
-                            left = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::right:
-                            right = ch;
-                            current = Controll::none;
-                            break;
-
-                        case Controll::shoot:
-                            shoot = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                }
+                else changeControll(ch);
                 break;
             }
             case '4':
@@ -293,39 +201,7 @@ void GameModel::control_player(wchar_t ch)
                 {
                     current = Controll::right;  
                 }
-                else if(ch != invalide)
-                {
-                    switch (current)
-                    {
-                        case Controll::up:
-                            up = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::down:
-                            down = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::left:
-                            left = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::right:
-                            right = ch;
-                            current = Controll::none;
-                            break;
-
-                        case Controll::shoot:
-                            shoot = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                }
+                else changeControll(ch);
                 break;
             }
             case '5':
@@ -334,39 +210,7 @@ void GameModel::control_player(wchar_t ch)
                 {
                     current = Controll::shoot;  
                 }
-                else if(ch != invalide)
-                {
-                    switch (current)
-                    {
-                        case Controll::up:
-                            up = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::down:
-                            down = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::left:
-                            left = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::right:
-                            right = ch;
-                            current = Controll::none;
-                            break;
-
-                        case Controll::shoot:
-                            shoot = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                }
+                else changeControll(ch);
                 break;
             }
             case '6':
@@ -376,44 +220,23 @@ void GameModel::control_player(wchar_t ch)
                     status = Status::titlescreen;
                     break;  
                 }
-                else if(ch != invalide)
-                {
-                    switch (current)
-                    {
-                        case Controll::up:
-                            up = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::down:
-                            down = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::left:
-                            left = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        case Controll::right:
-                            right = ch;
-                            current = Controll::none;
-                            break;
-
-                        case Controll::shoot:
-                            shoot = ch;
-                            current = Controll::none;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                }
+                else changeControll(ch);
                 break;
             }
             default:
-                {
-                if(ch != invalide)
+                
+                changeControll(ch);
+                break;
+        }
+    default:
+        break;  
+    }
+    }
+};
+
+void GameModel::changeControll(wchar_t ch)
+{
+    if(ch != invalide)
                 {
                 switch (current)
                     {
@@ -446,13 +269,6 @@ void GameModel::control_player(wchar_t ch)
                             break;
                     }
                 }
-            }
-            break;
-        }
-    default:
-        break;  
-    }
-    }
 };
 
 bool GameModel::reachedBorder()
@@ -579,6 +395,14 @@ void GameModel::aliensShoot()
                 shots.push_back(newShot);
             }
         }
+        else if(alienTimer == 40)
+        {
+            double random_value = dis(gen);
+            if (random_value <= p) {
+                Shot newShot = Shot(alien.getX(), alien.getY() + 1, false);
+                shots.push_back(newShot);
+            }
+        }
     }
 };
 
@@ -597,7 +421,7 @@ void GameModel::collision()
                  alien.setLifes(alien.getLifes() - 1);
                  shot.setActive(false);
                  calcScore(alien);
-                 tick += 0.4;
+                 tick += 0.5;
             }
         }
         return alien;
@@ -707,7 +531,7 @@ void GameModel::spawnPowerUp()
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dis(0.0, 1.0);
-    double p = 0.001;
+    double p = 0.0005;
     double random_value = dis(gen);
     if (random_value <= p) {
         std::uniform_int_distribution<int> disW(1, width-1);

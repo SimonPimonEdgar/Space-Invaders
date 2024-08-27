@@ -44,6 +44,7 @@ private:
     int width = 41; // game width
     int height = 24; // game height
     int alienTimer = 0;
+    int tick = 1;
     bool alienDir = false; //direction of the aliens (false = right, true = left)
     int playerShotTimer = 0;
     Status status = Status::titlescreen; // momentary screen

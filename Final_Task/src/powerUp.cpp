@@ -22,6 +22,11 @@ PowerUpVar PowerUp::getVar()
     return var;
 };
 
+bool PowerUp::getActive()
+{
+    return active;
+};
+
 void PowerUp::setX(int a)
 {
     x = a;
@@ -30,4 +35,9 @@ void PowerUp::setX(int a)
 void PowerUp::setY(int a)
 {
     y = a;
+};
+
+void PowerUp::setActive(bool a)
+{
+    active = a;
 };

@@ -96,19 +96,19 @@ void ConsoleView::update() {
     {
         if(model->getCurrent() == Controll::none)
         {
-        mvprintw(model->getGameHeight()/2 - 5, (model->getGameWidth()-19)/2 , "Press 1 to change: Upwards Movement");
+        mvprintw(model->getGameHeight()/2 - 5, (model->getGameWidth()-36)/2 , "Press 1 to change: Upwards Movement");
         //mvprintw(model->getGameHeight()/2 - 10, (model->getGameWidth()-25)/2 , "Up ist %c", model->getUp());
-        mvprintw(model->getGameHeight()/2 - 3, (model->getGameWidth()-19)/2 , "Press 2 to change: Downwards Movement");
+        mvprintw(model->getGameHeight()/2 - 3, (model->getGameWidth()-38)/2 , "Press 2 to change: Downwards Movement");
         //mvprintw(model->getGameHeight()/2 - 6, (model->getGameWidth()-25)/2 , "%s", message.c_str());
-        mvprintw(model->getGameHeight()/2 - 1, (model->getGameWidth()-19)/2 , "Press 3 to change: Left Movement");
+        mvprintw(model->getGameHeight()/2 - 1, (model->getGameWidth()-33)/2 , "Press 3 to change: Left Movement");
         //mvprintw(model->getGameHeight()/2 - 2, (model->getGameWidth()-25)/2 , "%s", message.c_str());
-        mvprintw(model->getGameHeight()/2 + 1, (model->getGameWidth()-19)/2 , "Press 4 to change: Right Movement");
+        mvprintw(model->getGameHeight()/2 + 1, (model->getGameWidth()-34)/2 , "Press 4 to change: Right Movement");
         //mvprintw(model->getGameHeight()/2 + 2, (model->getGameWidth()-25)/2 , "%s", message.c_str());
-        mvprintw(model->getGameHeight()/2 + 3, (model->getGameWidth()-19)/2 , "Press 5 to change: Shooting");
+        mvprintw(model->getGameHeight()/2 + 3, (model->getGameWidth()-28)/2 , "Press 5 to change: Shooting");
         //mvprintw(model->getGameHeight()/2 + 6, (model->getGameWidth()-25)/2 , "%s", message.c_str());
-        mvprintw(model->getGameHeight()/2 + 5, (model->getGameWidth()-19)/2 , "Press 6 to return to titlescreen");;
+        mvprintw(model->getGameHeight()/2 + 5, (model->getGameWidth()-33)/2 , "Press 6 to return to titlescreen");;
         }
-        else mvprintw(model->getGameHeight()/2, (model->getGameWidth()-19)/2 , "Press the wished key");
+        else mvprintw(model->getGameHeight()/2, (model->getGameWidth()-21)/2 , "Press the wished key");
     }
 };
 
@@ -130,9 +130,9 @@ void ConsoleView::drawAliens()
 {
     for(Alien& alien : model->getAliens())
     {
-        if(alien.getVar() == 1) mvaddch(alien.getY(), alien.getX(), alienTexture1);
-        else if(alien.getVar() == 2) mvaddch(alien.getY(), alien.getX(), alienTexture2);
-        else if(alien.getVar() == 3) mvaddch(alien.getY(), alien.getX(), alienTexture3);
+        if(alien.getVar() == AlienVar::Normal) mvaddch(alien.getY(), alien.getX(), alienTexture1);
+        else if(alien.getVar() == AlienVar::Tank) mvaddch(alien.getY(), alien.getX(), alienTexture2);
+        else if(alien.getVar() == AlienVar::Elite) mvaddch(alien.getY(), alien.getX(), alienTexture3);
 
     }
 };

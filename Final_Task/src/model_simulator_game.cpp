@@ -121,9 +121,12 @@ void GameModel::control_player(wchar_t ch)
                     else {
                         if (ch == shoot) 
                         {
+                            if(playerShotTimer <= 0)
+                            {
                             Shot newShot = Shot(player.getX(), player.getY()-1, true);
                             shots.push_back(newShot);
                             playerShotTimer = 15;
+                            }
                         }
                     }
                 }
@@ -506,7 +509,7 @@ void GameModel::moveAliens()
     }
 };
 
-// Geschrieben mit Hilfe von Ki
+// Geschrieben mit Hilfe von Ki, Prompt war: Wie kann ich Schüsse in einem Vektor löschen
 void GameModel::eraser()
 {
     shots.erase(
@@ -518,7 +521,7 @@ void GameModel::eraser()
     aliens.erase(
     std::remove_if(aliens.begin(), aliens.end(), [](Alien& alien)
     {
-        return alien.getHit();
+        return alien.getLifes() <= 0;
     }),
     aliens.end());
     covers.erase(
@@ -527,6 +530,12 @@ void GameModel::eraser()
         return cover.getLifes() == 0;
     }),
     covers.end());
+    powerUps.erase(
+    std::remove_if(powerUps.begin(), powerUps.end(), [](PowerUp& power)
+    {
+        return !power.getActive();
+    }),
+    powerUps.end());
 };
 
 void GameModel::moveShots()
@@ -562,30 +571,33 @@ void GameModel::aliensShoot()
     std::vector<Alien> aliensBottom = filterBottom();
     for(Alien& alien : aliensBottom)
     {
-        double random_value = dis(gen);
-        if (random_value <= p) {
-            Shot newShot = Shot(alien.getX(), alien.getY() + 1, false);
-            shots.push_back(newShot);
+        if(alien.getVar() == AlienVar::Elite)
+        {
+            double random_value = dis(gen);
+            if (random_value <= p) {
+                Shot newShot = Shot(alien.getX(), alien.getY() + 1, false);
+                shots.push_back(newShot);
+            }
         }
     }
 };
 
 void GameModel::calcScore(Alien alien)
 {
-    if(alien.getVar() == 1) player.setScore(player.getScore() + 50);
+    if(alien.getVar() == AlienVar::Normal) player.setScore(player.getScore() + 50);
 };
 
 void GameModel::collision()
 {
     std::transform(aliens.begin(), aliens.end(), aliens.begin(), [this](Alien alien) {
-        alien.setHit(false);
         for(Shot& shot: shots)
         {
             if(shot.getX() == alien.getX() && shot.getY() == alien.getY() && shot.getDir())
             {
-                 alien.setHit(true);
+                 alien.setLifes(alien.getLifes() - 1);
                  shot.setActive(false);
                  calcScore(alien);
+                 tick += 0.4;
             }
         }
         return alien;
@@ -602,8 +614,8 @@ void GameModel::collision()
     std::transform(covers.begin(), covers.end(), covers.begin(), [this](Cover cover) {
         for(Shot& shot: shots)
         {
-            if(shot.getX() == cover.getX() && shot.getY() == cover.getY() || shot.getX() == cover.getX()+1 && shot.getY() == cover.getY() 
-            || shot.getX() == cover.getX()+2 && shot.getY() == cover.getY())
+            if((shot.getX()== cover.getX() && shot.getY() == cover.getY()) || (shot.getX() == cover.getX()+1 && shot.getY() == cover.getY()) 
+            || (shot.getX() == cover.getX()+2 && shot.getY() == cover.getY()))
             {
                 if(!shot.getDir())   cover.setLifes(cover.getLifes() - 1);
                 shot.setActive(false);
@@ -615,6 +627,14 @@ void GameModel::collision()
     {
         if(shot.getY() > height - 2 ||shot.getY() < 1) shot.setActive(false);
     }
+    for(PowerUp& power : powerUps)
+    {
+        if(power.getX() == player.getX() && power.getY() == player.getY())
+        {
+            if(power.getVar()  == PowerUpVar::health)player.setLifes(player.getLifes() + 1);
+            power.setActive(false);
+        }
+    }
 };
 
 void GameModel::reset()
@@ -625,6 +645,7 @@ void GameModel::reset()
     shots.clear();
     aliens.clear();
     covers.clear();
+    powerUps.clear();
     alienTimer = 0;
     playerShotTimer = 0;
 };
@@ -637,7 +658,7 @@ void GameModel::waveCreation(int w)
             {
                 reset();
                 for(int i = 0; i < 40; i ++){
-                    aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
+                    aliens.push_back( Alien(AlienVar::Normal, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
                 }
                 covers.push_back(Cover((width - 2)/2, height - 6));
                 covers.push_back(Cover((width - 1)/4, height - 6));
@@ -648,10 +669,10 @@ void GameModel::waveCreation(int w)
             {
                 reset();
                 for(int i = 0; i < 20; i ++){
-                    aliens.push_back( Alien(2, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
+                    aliens.push_back( Alien(AlienVar::Tank, 10 + (int) 2 * (i%10), 4 + div(i, 10).quot));
                 }
                 for(int i = 0; i < 20; i ++){
-                    aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 6 + div(i, 10).quot));
+                    aliens.push_back( Alien(AlienVar::Normal, 10 + (int) 2 * (i%10), 6 + div(i, 10).quot));
                 }
                 covers.push_back(Cover((2 * width/5) -8, height - 6));
                 covers.push_back(Cover((4* width/5) - 4, height - 6));
@@ -661,13 +682,13 @@ void GameModel::waveCreation(int w)
             {
                 reset();
                 for(int i = 0; i < 10; i ++){
-                    aliens.push_back( Alien(3, 10 + (int) 2 * (i%10), 4));
+                    aliens.push_back( Alien(AlienVar::Elite, 10 + (int) 2 * (i%10), 4));
                 }
                 for(int i = 0; i < 20; i ++){
-                    aliens.push_back( Alien(2, 10 + (int) 2 * (i%10), 5 + div(i, 10).quot));
+                    aliens.push_back( Alien(AlienVar::Tank, 10 + (int) 2 * (i%10), 5 + div(i, 10).quot));
                 }
                 for(int i = 0; i < 10; i ++){
-                    aliens.push_back( Alien(1, 10 + (int) 2 * (i%10), 7));
+                    aliens.push_back( Alien(AlienVar::Normal, 10 + (int) 2 * (i%10), 7));
                 }
                 covers.push_back(Cover((3* width/5) - 6, height - 6));
                 break;
@@ -686,11 +707,11 @@ void GameModel::spawnPowerUp()
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dis(0.0, 1.0);
-    double p = 0.003;
+    double p = 0.001;
     double random_value = dis(gen);
     if (random_value <= p) {
         std::uniform_int_distribution<int> disW(1, width-1);
-        std::uniform_int_distribution<int> disH(12, height - 6);
+        std::uniform_int_distribution<int> disH(12, height - 7);
         int random_valueW = disW(gen);
         int random_valueH = disH(gen);
         powerUps.push_back(PowerUp(random_valueW, random_valueH, PowerUpVar::health));
@@ -702,7 +723,7 @@ void GameModel::simulate_game_step()
     // Implement game dynamics.
     if(status == Status::ingame)
     {
-    if(alienTimer == 45)aliensShoot();
+    if(alienTimer == 40 || alienTimer == 20)aliensShoot();
     if(alienTimer%5 == 0)moveShots();
     moveAliens();
     collision();
@@ -711,5 +732,5 @@ void GameModel::simulate_game_step()
     if(player.getLifes() == 0 || aliens.empty()) status = Status::titlescreen;
     }
     notifyUpdate();
-    alienTimer ++;
+    alienTimer +=  tick;
 };

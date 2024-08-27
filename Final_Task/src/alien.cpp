@@ -1,8 +1,10 @@
 #include "alien.h"
 
-Alien::Alien(int var, int x, int y)
+Alien::Alien(AlienVar var, int x, int y)
 {
     this->var = var;
+    if(var == AlienVar::Normal) lifes = 1;
+    else lifes = 2;
     setX(x);
     setY(y);
 };
@@ -17,14 +19,14 @@ int Alien::getY()
     return y;  
 };
 
-int Alien::getVar()
+AlienVar Alien::getVar()
 {
     return var;
-};
+}
 
-bool Alien::getHit()
+int Alien::getLifes()
 {
-    return dead;
+    return lifes;
 };
 
 void Alien::setX(int a)
@@ -37,7 +39,7 @@ void Alien::setY(int a)
     y = a;
 };
 
-void Alien::setHit(bool a)
+void Alien::setLifes(int a)
 {
-    dead = a;
+    lifes = a;
 };

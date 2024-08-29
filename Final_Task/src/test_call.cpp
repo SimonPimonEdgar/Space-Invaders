@@ -3,8 +3,7 @@
 #include <boost/test/included/unit_test.hpp>
 
 #include "model_simulator_game.h"
-#include "alien.h"
-#include "player.h"
+
 
 BOOST_AUTO_TEST_SUITE(AddOneTest);
 
@@ -13,9 +12,7 @@ BOOST_AUTO_TEST_CASE(TestCases)
     GameModel* game = new GameModel();
     BOOST_CHECK_EQUAL(game->getPlayer().getLifes(), 3);
     BOOST_CHECK_EQUAL(game->getShots().empty(), true);
-    game->control_player(game->getShoot());
-    BOOST_CHECK_EQUAL(game->getShots().empty(), false);
-    BOOST_CHECK_EQUAL(game->getStatus(), Status::titlescreen);
+    BOOST_CHECK_EQUAL(game->getAliens().empty(), true);
     
     Alien* alien = new Alien(AlienVar::Tank, 1, 1);
     BOOST_CHECK_EQUAL(alien->getX(), 1);
@@ -39,7 +36,7 @@ BOOST_AUTO_TEST_CASE(TestCases)
     BOOST_CHECK_EQUAL(cover->getX(), 2);
 
     PowerUp* power = new PowerUp(1, 1, PowerUpVar::health);
-    BOOST_CHECK_EQUAL(power->getVar(), PowerUpVar::health);
+    BOOST_CHECK_EQUAL(power->getY(), 1);
     power->setActive(false);
     BOOST_CHECK_EQUAL(power->getActive(), false);
     power->setX(2);

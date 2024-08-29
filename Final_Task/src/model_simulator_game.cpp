@@ -318,6 +318,7 @@ void GameModel::moveAliens()
                 for(Alien& a : aliens)
                 { 
                     a.setY(a.getY() + 1);
+                    if(a.getY() > height - 1) player.setLifes(0);
                 }  
                 alienDir = false;
             }

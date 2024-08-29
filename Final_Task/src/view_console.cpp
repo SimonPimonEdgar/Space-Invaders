@@ -65,7 +65,7 @@ void ConsoleView::update() {
                 }
                 else
                 {
-                    mvprintw(model->getGameHeight()/2 - 4, (model->getGameWidth()-10)/2 , "You died.");
+                    mvprintw(model->getGameHeight()/2 - 4, (model->getGameWidth()-10)/2 , "You lost.");
                     std::string message = "Your score was:" + std::to_string(model->getPlayer().getScore()) + " Points";
                     mvprintw(model->getGameHeight()/2 - 3, (model->getGameWidth()-30)/2 , "%s", message.c_str());
                     mvprintw(model->getGameHeight()/2, (model->getGameWidth()-19)/2 , "Press 1 to restart");
